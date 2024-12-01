@@ -4,6 +4,7 @@ import './App.css';
 import SignIn from './components/auth/SignIn';
 import CreateAccount from './components/auth/CreateAccount';
 import HomePage from './components/Homepage';
+import Dashboard from './components/Dashboard';
 import { Home } from 'lucide-react';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path ="/signin" element={<SignIn />} />
           <Route path ="/signup" element={<CreateAccount />} />
           <Route path ="/home" element={<HomePage />} />
+          <Route path ="/dashboard" element={<Dashboard />} />
           <Route path ="/" element={<Navigate to="/signin" replace />} />
         </Routes>
       </div>

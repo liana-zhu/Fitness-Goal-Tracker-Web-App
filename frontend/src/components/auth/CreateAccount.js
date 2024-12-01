@@ -134,10 +134,11 @@ const CreateAccount = () => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-white bg-blue-600
+                         hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                         Create Account
-                        <ArrowRight className="ml-2 h-5 w-5" />
+                        <ArrowRight className="ml-2 h-5 w-5 mt-0.5" />
                     </button>
 
                     {/* Sign In Link */}
