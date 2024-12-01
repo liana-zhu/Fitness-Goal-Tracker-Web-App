@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import Dashboard from "./Dashboard";
+import WeightTracking from "./WeightTracking";
 
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -105,6 +106,8 @@ const HomePage = () => {
           {/* Placeholder Content */}
           {activeSection === "dashboard" ? (
             <Dashboard />
+          ) : activeSection === "weight" ? (
+            <WeightTracking />
           ) : (
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">
