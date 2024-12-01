@@ -1,2 +1,3 @@
-Npm install react-router-dom
-Npm install lucide-react
+Install node.js from nodejs.org
+npm install
+npm start
