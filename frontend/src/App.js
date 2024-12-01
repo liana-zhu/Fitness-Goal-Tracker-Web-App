@@ -10,7 +10,6 @@ import SignIn from "./components/auth/SignIn";
 import CreateAccount from "./components/auth/CreateAccount";
 import HomePage from "./components/Homepage";
 import Dashboard from "./components/Dashboard";
-import WeightTracking from "./components/WeightTracking";
 import { Home } from "lucide-react";
 
 function App() {

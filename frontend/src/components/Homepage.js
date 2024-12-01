@@ -11,9 +11,10 @@ import {
 import Dashboard from "./Dashboard";
 import WeightTracking from "./WeightTracking";
 import CalorieTracking from "./CalorieTracking";
+import WorkoutTracking from "./WorkoutTracking";
 
 const HomePage = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("dashboard");
 
   const handleLogout = () => {
@@ -71,7 +72,10 @@ const HomePage = () => {
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setActiveSection(item.id)}
+                onClick={() => {
+                  setActiveSection(item.id);
+                  setIsSidebarOpen(false);
+                }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-colors ${
                   activeSection === item.id
                     ? "bg-blue-100 text-blue-600"
@@ -111,6 +115,8 @@ const HomePage = () => {
             <WeightTracking />
           ) : activeSection === "calories" ? (
             <CalorieTracking />
+          ) : activeSection === "workout" ? (
+            <WorkoutTracking />
           ) : (
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">

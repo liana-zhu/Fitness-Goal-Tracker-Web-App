@@ -241,7 +241,14 @@ const CalorieTracking = () => {
               {dailyEntries.map((entry) => (
                 <tr key={entry.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {entry.time}
+                    {new Date(`2024-01-01 ${entry.time}`).toLocaleTimeString(
+                      "en-US",
+                      {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      }
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {entry.foodName}
