@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Dashboard from "./Dashboard";
 import WeightTracking from "./WeightTracking";
+import CalorieTracking from "./CalorieTracking";
 
 const HomePage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -108,6 +109,8 @@ const HomePage = () => {
             <Dashboard />
           ) : activeSection === "weight" ? (
             <WeightTracking />
+          ) : activeSection === "calories" ? (
+            <CalorieTracking />
           ) : (
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">
