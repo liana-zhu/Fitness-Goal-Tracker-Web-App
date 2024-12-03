@@ -19,11 +19,6 @@ import { Scale, Utensils, Dumbbell } from "lucide-react";
 // - Create REST endpoints:
 //   GET /api/dashboard/stats - Returns current weight, calories, workout count
 //   GET /api/dashboard/activity - Returns recent activity feed
-// - SQL tables needed:
-//   weight_logs
-//   calorie_logs
-//   workouts
-//   activities
 
 // Data constants
 // TODO Backend: Replace with API response data
@@ -67,12 +62,6 @@ const Dashboard = () => {
     { date: "Sun", workouts: 0 },
   ];
 
-  const handleViewDetails = (title, data) => {
-    // TODO: Frontend - Implement navigation/modal for detailed view
-    // TODO: Backend - Add API endpoint for detailed data retrieval
-    console.log(`Viewing details for ${title}`, data);
-  };
-
   const SummaryCard = ({ title, value, unit, icon: Icon, data }) => (
     <div className="bg-white rounded-lg shadow-md p-g flex flex-col">
       <div className="flex items-center justify-between mb-4">
@@ -87,6 +76,7 @@ const Dashboard = () => {
       </div>
       <div className="h-32">
         <ResponsiveContainer width="100%" height="100%">
+          {/* RIGHT HERE IS WHERE THE HARDCODED DATA IS BEING GRAPHED */}
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
@@ -101,12 +91,6 @@ const Dashboard = () => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <button
-        onClick={() => handleViewDetails(title, data)}
-        className="mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium"
-      >
-        View Details
-      </button>
     </div>
   );
 
@@ -132,7 +116,6 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold text-gray-800">Greetings!</h2>
         <p className="text-gray-600 mt-1">Here Are Your Stats</p>
       </div>
-
       {/* Summary Grid */}
       <div>
         {/* DUMMY DATA FOR FRONTEND/BACKEND IMPLEMENTATION */}
@@ -160,8 +143,6 @@ const Dashboard = () => {
           icon={Dumbbell}
         />
       </div>
-
-      {/* Recent Activity */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Recent Activity
