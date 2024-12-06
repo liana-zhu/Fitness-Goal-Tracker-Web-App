@@ -30,7 +30,7 @@ const SignIn = () => {
         // Store the userId in localStorage
         localStorage.setItem("userId", userId);
   
-        // Redirect to the home page or another protected route
+        // Redirect to the home page
         navigate("/home");
       } else {
         const errorMessage = await response.text();

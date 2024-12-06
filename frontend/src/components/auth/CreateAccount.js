@@ -38,7 +38,7 @@ const CreateAccount = () => {
       if (response.ok) {
         const message = await response.text();
         console.log(message); // Show success message in console
-        // Redirect to login or another page
+        // Redirect to login (If u want to redirect to home, let us know so we can return userID here too for u b/c it's currently not passed here)
       } else {
         const errorMessage = await response.text();
         alert(errorMessage); // Show error message
