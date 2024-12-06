@@ -3,7 +3,7 @@ import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  //***Need to handle when a user uses username or email***
+  //***Need to handle when a user uses username or email*** (Handled in back-end)
   const [userInput, setUserInput] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const SignIn = () => {
         // Store the userId in localStorage
         localStorage.setItem("userId", userId);
   
-        // Navigate to the home page or another protected route
+        // Redirect to the home page or another protected route
         navigate("/home");
       } else {
         const errorMessage = await response.text();

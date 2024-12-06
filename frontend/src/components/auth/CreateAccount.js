@@ -17,15 +17,36 @@ const CreateAccount = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    /**
-     * TODO: Pending implementation
-     * - Frontend validation
-     * - Password matching validation
-     * - Form submission functionality
-     * Awaiting frontend team implementation
-     */
+  
+    // Frontend validation still needed (confirm password)
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+  
+      if (response.ok) {
+        const message = await response.text();
+        console.log(message); // Show success message in console
+        // Redirect to login or another page
+      } else {
+        const errorMessage = await response.text();
+        alert(errorMessage); // Show error message
+      }
+    } catch (error) {
+      console.error("Error occurred during registration:", error);
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   return (

@@ -10,4 +10,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     // Custom query to find a user by either username or email
     Optional<User> findByUsernameOrUserEmail(String userInput, String userInputDuplicate);
+
+    // Check if a user exists by username
+    Optional<User> findByUsername(String username);
+
+    // Check if a user exists by email
+    Optional<User> findByUserEmail(String userEmail);
 }
