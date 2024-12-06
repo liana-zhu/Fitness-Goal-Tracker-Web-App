@@ -26,7 +26,7 @@ public class LoginService {
                 throw new IllegalArgumentException("Invalid password.");
             }
         } else {
-            throw new IllegalArgumentException("No user found with the provided username/email");
+            throw new IllegalArgumentException("That user does not exist.");
         }
     }
 }
