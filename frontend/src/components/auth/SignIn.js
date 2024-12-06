@@ -8,15 +8,40 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    /**
-     * TODO: Pending implementation
-     * - Frontend validation
-     * - Form submission functionality
-     * Awaiting frontend team implementation
-     */
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          userInput: userInput,
+          password: password,
+        }),
+      });
+  
+      if (response.ok) {
+        const userId = await response.json(); // Extract the userId from the response
+        console.log("Login successful! User ID:", userId);
+  
+        // Store the userId in localStorage
+        localStorage.setItem("userId", userId);
+  
+        // Navigate to the home page or another protected route
+        navigate("/home");
+      } else {
+        const errorMessage = await response.text();
+        console.error("Login failed:", errorMessage);
+        alert(errorMessage); // Show the error message to the user
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };  
 
   const handleGuestAccess = () => {
     navigate("/home");
