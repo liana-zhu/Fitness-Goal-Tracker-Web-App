@@ -8,25 +8,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id") // Match database column name
-    private int userID;
+    private int userId;
 
-    @Column(name = "username", nullable = false, length = 20, unique = true)
     private String username;
 
-    @Column(name = "user_password", nullable = false, length = 20) // Match database column name
     private String userPassword;
 
-    @Column(name = "user_email", nullable = false, length = 20, unique = true) // Match database column name
     private String userEmail;
 
     // Getters and Setters
     public int getUserId() {
-        return userID;
+        return userId;
     }
 
     public void setUserId(int userID) {
-        this.userID = userID;
+        this.userId = userID;
     }
 
     public String getUsername() {
