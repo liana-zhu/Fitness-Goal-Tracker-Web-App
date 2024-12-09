@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/sidebar/username")
-public class UserController {
+public class UserNameController {
 
     @Autowired
     private UserNameService userNameService;
