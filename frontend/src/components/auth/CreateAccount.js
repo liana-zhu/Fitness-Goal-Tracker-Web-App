@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 
 const CreateAccount = () => {
@@ -8,7 +9,9 @@ const CreateAccount = () => {
     password: "",
     confirmPassword: "",
   });
-
+  
+  const navigate = useNavigate();
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -19,8 +22,6 @@ const CreateAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Frontend validation still needed (confirm password)
   
     try {
       const response = await fetch("http://localhost:8080/api/auth/register", {
@@ -38,7 +39,7 @@ const CreateAccount = () => {
       if (response.ok) {
         const message = await response.text();
         console.log(message); // Show success message in console
-        // Redirect to login (If u want to redirect to home, let us know so we can return userID here too for u b/c it's currently not passed here)
+        navigate("/signin");
       } else {
         const errorMessage = await response.text();
         alert(errorMessage); // Show error message
