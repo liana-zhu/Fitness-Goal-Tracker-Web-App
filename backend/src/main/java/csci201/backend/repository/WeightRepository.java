@@ -16,4 +16,9 @@ public interface WeightRepository extends JpaRepository<Weight, Integer> {
      Weight findTopByUserUserIdAndWeightTimestampLessThanOrderByWeightTimestampDesc(int userId, Timestamp before);
 
      List<Weight> findTop3ByUserUserIdOrderByWeightTimestampDesc(int userId);
+     List<Weight> findByUserId(int userId);
+     
+    @Query("SELECT w FROM Weight w WHERE w.userId = :userId AND DATE(w.weightTimestamp) = :date")
+    List<Weight> findByUserIdAndDate(@Param("userId") int userId, @Param("date") LocalDate date);
+     
 }
