@@ -11,10 +11,10 @@ public class Weight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int weightId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
 
+    @Column(name = "weight_timestamp", insertable = false, updatable = false)
     private Timestamp weightTimestamp;
 
     private int weightVal;
@@ -28,12 +28,12 @@ public class Weight {
         this.weightId = weightId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Timestamp getWeightTimestamp() {
