@@ -3,8 +3,11 @@ package csci201.backend.repository;
 import csci201.backend.entity.Weight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.sql.Timestamp;
 import java.util.List;
+import java.time.LocalDate;
 
 @Repository
 public interface WeightRepository extends JpaRepository<Weight, Integer> {
