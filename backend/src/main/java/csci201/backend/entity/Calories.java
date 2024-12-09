@@ -5,16 +5,17 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "calories")
+
 public class Calories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int caloriesId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
 
+    @Column(name = "calories_timestamp", insertable = false, updatable = false)
     private Timestamp caloriesTimestamp;
 
     private String foodName;
@@ -36,21 +37,22 @@ public class Calories {
         this.caloriesId = caloriesId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Timestamp getCaloriesTimestamp() {
         return caloriesTimestamp;
     }
 
+    /* 
     public void setCaloriesTimestamp(Timestamp caloriesTimestamp) {
         this.caloriesTimestamp = caloriesTimestamp;
-    }
+    }*/
 
     public String getFoodName() {
         return foodName;
