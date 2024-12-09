@@ -27,8 +27,10 @@ const SignIn = () => {
         const userId = await response.json(); // Extract the userId from the response
         console.log("Login successful! User ID:", userId);
   
-        // Store the userId in localStorage
+        // Store the userId and userName in localStorage
         localStorage.setItem("userId", userId);
+        localStorage.setItem("userName", userInput);
+
   
         // Redirect to the home page
         navigate("/home");
@@ -45,12 +47,6 @@ const SignIn = () => {
 
   const handleGuestAccess = () => {
     navigate("/home");
-    /**
-     * TODO: Pending implementation
-     * - Frontend validation
-     * - Form submission functionality
-     * Awaiting frontend team implementation
-     */
   };
 
   const handleCreateAccount = () => {
