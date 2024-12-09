@@ -18,4 +18,8 @@ public interface CaloriesRepository extends JpaRepository<Calories, Integer> {
     List<Object[]> findCaloriesSumByUserIdAndDateRange(int userId, Timestamp start, Timestamp end);
 
     List<Calories> findTop3ByUserUserIdOrderByCaloriesTimestampDesc(int userId);
+
+    List<Calories> findByUserId(int userId);
+    @Query("SELECT c FROM Calories c WHERE c.userId = :userId AND DATE(c.caloriesTimestamp) = :date")
+    List<Calories> findByUserIdAndDate(@Param("userId") int userId, @Param("date") LocalDate date);
 }
