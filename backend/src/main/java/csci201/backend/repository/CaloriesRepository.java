@@ -3,8 +3,10 @@ package csci201.backend.repository;
 import csci201.backend.entity.Calories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
