@@ -3,6 +3,8 @@ package csci201.backend.entity;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "weight")
 public class Weight {
@@ -14,6 +16,7 @@ public class Weight {
     @Column(name = "user_id")
     private int userId;
 
+    @CreationTimestamp
     @Column(name = "weight_timestamp", insertable = false, updatable = false)
     private Timestamp weightTimestamp;
 

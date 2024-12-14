@@ -13,12 +13,12 @@ import java.time.LocalDate;
 public interface WeightRepository extends JpaRepository<Weight, Integer> {
      
     // Find all weight entries for a user within a specific time range
-     List<Weight> findByUserUserIdAndWeightTimestampBetween(int userId, Timestamp start, Timestamp end);
+     List<Weight> findByUserIdAndWeightTimestampBetween(int userId, Timestamp start, Timestamp end);
 
      // Find the most recent weight entry before a specific timestamp
-     Weight findTopByUserUserIdAndWeightTimestampLessThanOrderByWeightTimestampDesc(int userId, Timestamp before);
+     Weight findTopByUserIdAndWeightTimestampLessThanOrderByWeightTimestampDesc(int userId, Timestamp before);
 
-     List<Weight> findTop3ByUserUserIdOrderByWeightTimestampDesc(int userId);
+     List<Weight> findTop3ByUserIdOrderByWeightTimestampDesc(int userId);
      List<Weight> findByUserId(int userId);
      
     @Query("SELECT w FROM Weight w WHERE w.userId = :userId AND DATE(w.weightTimestamp) = :date")

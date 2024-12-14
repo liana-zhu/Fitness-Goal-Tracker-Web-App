@@ -73,7 +73,6 @@ const CalorieTracking = () => {
           time: new Date(entry.caloriesTimestamp).toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: true,
           }),
           foodName: entry.foodName,
           calories: entry.calories,
@@ -125,7 +124,6 @@ const CalorieTracking = () => {
             time: new Date(newEntry.caloriesTimestamp).toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
-              hour12: true,
             }),
             foodName: newEntry.foodName,
             calories: newEntry.calories,
@@ -190,25 +188,27 @@ const CalorieTracking = () => {
 
     if (response.ok) {
       const updatedEntry = await response.json();
+      // Update the entry in the dailyEntries state
       setDailyEntries((prev) =>
         prev.map((entry) =>
-          entry.id === updatedEntry.caloriesId
+          entry.id === editingEntry
             ? {
-                ...updatedEntry,
-                time: new Date(updatedEntry.caloriesTimestamp).toLocaleTimeString(
-                  "en-US",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  }
-                ),
+                id: updatedEntry.caloriesId, // Ensure the ID is updated correctly
+                time: new Date(updatedEntry.caloriesTimestamp).toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+                foodName: updatedEntry.foodName,
+                calories: updatedEntry.calories,
+                protein: updatedEntry.protein,
+                carbs: updatedEntry.carbs,
+                fat: updatedEntry.fat,
               }
             : entry
         )
       );
 
-      setEditingEntry(null);
+      setEditingEntry(null); // Exit edit mode
     } else {
       console.error("Failed to update entry");
     }
@@ -254,7 +254,6 @@ const CalorieTracking = () => {
           time: new Date(entry.caloriesTimestamp).toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: true,
           }),
         }));
         setDailyEntries(formattedData);
@@ -449,7 +448,6 @@ const CalorieTracking = () => {
           {new Date(`2024-01-01 ${entry.time}`).toLocaleTimeString("en-US", {
             hour: "numeric",
             minute: "2-digit",
-            hour12: true,
           })}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -518,7 +516,6 @@ const CalorieTracking = () => {
           {new Date(`2024-01-01 ${entry.time}`).toLocaleTimeString("en-US", {
             hour: "numeric",
             minute: "2-digit",
-            hour12: true,
           })}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">

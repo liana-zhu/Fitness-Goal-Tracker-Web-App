@@ -2,6 +2,9 @@ package csci201.backend.service;
 
 import csci201.backend.entity.Weight;
 import csci201.backend.repository.WeightRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import java.util.Map;
 @Service
 public class WeightDashService {
 
+    private static final Logger logger = LoggerFactory.getLogger(WeightDashService.class);
+
     @Autowired
     private WeightRepository weightRepository;
 
@@ -22,14 +27,14 @@ public class WeightDashService {
         LocalDate sevenDaysAgo = today.minusDays(6);
 
         // Get all weight entries for the user
-        List<Weight> weights = weightRepository.findByUserUserIdAndWeightTimestampBetween(
+        List<Weight> weights = weightRepository.findByUserIdAndWeightTimestampBetween(
                 userId,
                 Timestamp.valueOf(sevenDaysAgo.atStartOfDay()),
                 Timestamp.valueOf(today.plusDays(1).atStartOfDay())
         );
 
         // Get the last entry before the 7-day period
-        Weight lastEntryBeforePeriod = weightRepository.findTopByUserUserIdAndWeightTimestampLessThanOrderByWeightTimestampDesc(
+        Weight lastEntryBeforePeriod = weightRepository.findTopByUserIdAndWeightTimestampLessThanOrderByWeightTimestampDesc(
                 userId,
                 Timestamp.valueOf(sevenDaysAgo.atStartOfDay())
         );
@@ -58,6 +63,7 @@ public class WeightDashService {
             }
         }
 
+        logger.info("Weight Trend for User {}: {}", userId, weightTrend);
         return weightTrend;
     }
 }

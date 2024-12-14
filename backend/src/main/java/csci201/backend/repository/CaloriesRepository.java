@@ -12,14 +12,19 @@ import java.util.List;
 @Repository
 public interface CaloriesRepository extends JpaRepository<Calories, Integer> {
 
-    @Query("SELECT DATE(c.caloriesTimestamp) as date, SUM(c.calories) as totalCalories " +
-           "FROM Calories c " +
-           "WHERE c.user.userId = :userId AND c.caloriesTimestamp BETWEEN :start AND :end " +
-           "GROUP BY DATE(c.caloriesTimestamp) " +
-           "ORDER BY DATE(c.caloriesTimestamp)")
-    List<Object[]> findCaloriesSumByUserIdAndDateRange(int userId, Timestamp start, Timestamp end);
+    @Query("SELECT CAST(c.caloriesTimestamp AS date) as date, SUM(c.calories) as totalCalories " +
+    "FROM Calories c " +
+    "WHERE c.userId = :userId " +
+    "AND c.caloriesTimestamp BETWEEN :start AND :end " +
+    "GROUP BY CAST(c.caloriesTimestamp AS date) " +
+    "ORDER BY CAST(c.caloriesTimestamp AS date)")
+List<Object[]> findCaloriesSumByUserIdAndDateRange(
+    @Param("userId") int userId,
+    @Param("start") Timestamp start,
+    @Param("end") Timestamp end
+);
 
-    List<Calories> findTop3ByUserUserIdOrderByCaloriesTimestampDesc(int userId);
+    List<Calories> findTop3ByUserIdOrderByCaloriesTimestampDesc(int userId);
 
     List<Calories> findByUserId(int userId);
     @Query("SELECT c FROM Calories c WHERE c.userId = :userId AND DATE(c.caloriesTimestamp) = :date")

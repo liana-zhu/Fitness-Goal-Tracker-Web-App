@@ -3,6 +3,8 @@ package csci201.backend.entity;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "calories")
 
@@ -15,6 +17,7 @@ public class Calories {
     @Column(name = "user_id")
     private int userId;
 
+    @CreationTimestamp
     @Column(name = "calories_timestamp", insertable = false, updatable = false)
     private Timestamp caloriesTimestamp;
 

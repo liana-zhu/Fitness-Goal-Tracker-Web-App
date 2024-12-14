@@ -20,10 +20,11 @@ public class WorkoutController {
 
     @PostMapping
     public ResponseEntity<Workout> addWorkoutEntry(@RequestBody Map<String, Object> payload) {
+        System.out.println("Received payload: " + payload);
         int userId = Integer.parseInt(payload.get("userId").toString());
-        String workoutType = payload.get("workoutType").toString();
-        String workoutName = payload.get("workoutName").toString();
-        Integer numSets = payload.containsKey("numSets") ? Integer.parseInt(payload.get("numSets").toString()) : null;
+        String workoutType = payload.get("type").toString();
+        String workoutName = payload.get("name").toString();
+        Integer numSets = payload.get("sets").toString() != "" ? Integer.parseInt(payload.get("sets").toString()) : null;
         int duration = Integer.parseInt(payload.get("duration").toString());
 
         Workout workout = new Workout();
@@ -58,15 +59,15 @@ public class WorkoutController {
         @RequestBody Map<String, Object> payload
     ) {
         return workoutRepository.findById(id).map(existingWorkout -> {
-            if (payload.containsKey("workoutType")) {
-                existingWorkout.setWorkoutType(Workout.WorkoutType.valueOf(payload.get("workoutType").toString()));
+            if (payload.containsKey("type")) {
+                existingWorkout.setWorkoutType(Workout.WorkoutType.valueOf(payload.get("type").toString()));
             }
-            if (payload.containsKey("workoutName")) {
-                existingWorkout.setWorkoutName(payload.get("workoutName").toString());
+            if (payload.containsKey("name")) {
+                existingWorkout.setWorkoutName(payload.get("name").toString());
             }
-            if (payload.containsKey("numSets")) {
+            if (payload.containsKey("sets")) {
                 existingWorkout.setNumSets(
-                    payload.get("numSets") != null ? Integer.parseInt(payload.get("numSets").toString()) : null
+                    payload.get("sets") != null ? Integer.parseInt(payload.get("sets").toString()) : null
                 );
             }
             if (payload.containsKey("duration")) {

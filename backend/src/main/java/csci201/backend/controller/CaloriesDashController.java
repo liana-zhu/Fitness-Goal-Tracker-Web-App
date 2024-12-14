@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -18,6 +19,10 @@ public class CaloriesDashController {
     @GetMapping
     public ResponseEntity<Map<LocalDate, Integer>> getWeeklyCaloriesSummary(@RequestParam int userId) {
         Map<LocalDate, Integer> weeklyCalories = caloriesDashService.getDailyCaloriesForPastWeek(userId);
+        if (weeklyCalories.isEmpty()) {
+            // Return an empty map if no data exists
+            return ResponseEntity.ok(Collections.emptyMap());
+        }
         return ResponseEntity.ok(weeklyCalories);
     }
 }

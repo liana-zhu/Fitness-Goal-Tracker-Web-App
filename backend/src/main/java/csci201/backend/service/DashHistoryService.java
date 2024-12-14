@@ -32,18 +32,18 @@ public class DashHistoryService {
         List<RecentActivity> activities = new ArrayList<>();
 
         // Fetch workouts
-        List<Workout> workouts = workoutRepository.findTop3ByUserUserIdOrderByWorkoutTimestampDesc(userId);
+        List<Workout> workouts = workoutRepository.findTop3ByUserIdOrderByWorkoutTimestampDesc(userId);
         for (Workout workout : workouts) {
             activities.add(new RecentActivity(
                 "Workout logged",
                 workout.getWorkoutName(),
                 null,
-                workout.getWorkoutTimestamp()
+                Timestamp.valueOf(workout.getWorkoutTimestamp())
             ));
         }
 
         // Fetch weights
-        List<Weight> weights = weightRepository.findTop3ByUserUserIdOrderByWeightTimestampDesc(userId);
+        List<Weight> weights = weightRepository.findTop3ByUserIdOrderByWeightTimestampDesc(userId);
         for (Weight weight : weights) {
             activities.add(new RecentActivity(
                 "Weight logged",
@@ -54,7 +54,7 @@ public class DashHistoryService {
         }
 
         // Fetch calories
-        List<Calories> caloriesList = caloriesRepository.findTop3ByUserUserIdOrderByCaloriesTimestampDesc(userId);
+        List<Calories> caloriesList = caloriesRepository.findTop3ByUserIdOrderByCaloriesTimestampDesc(userId);
         for (Calories calories : caloriesList) {
             activities.add(new RecentActivity(
                 "Meal logged",

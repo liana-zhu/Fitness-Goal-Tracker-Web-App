@@ -18,6 +18,42 @@ const WeightTracking = () => {
   const [timeframe, setTimeframe] = useState("1M"); // 1W, 1M, 3M, 6M, 1Y, ALL
   const [dailyEntries, setDailyEntries] = useState([]);
 
+  const [weightData, setWeightData] = useState([]);
+  const [loadingWeight, setLoadingWeight] = useState(true);
+
+  // Fetch weight data
+  const fetchWeightData = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      console.error("No userId found in local storage.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/dash/weight?userId=${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const formattedData = Object.entries(data).map(([date, weight]) => ({
+          date, // Use the date key as-is
+          weight: weight || 0, // Ensure weight is not null
+        }));
+        setWeightData(formattedData);
+      } else {
+        console.error("Failed to fetch weight data:", response.statusText);
+        setWeightData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching weight data:", error);
+      setWeightData([]);
+    } finally {
+      setLoadingWeight(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWeightData();
+  }, []);
+
  useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
@@ -41,7 +77,7 @@ const WeightTracking = () => {
         const data = await response.json();
         const formattedData = data.map((entry) => ({
           id: entry.weightId,
-          date: new Date(entry.weightTimestamp).toISOString().split("T")[0],
+          date: entry.weightTimestamp,
           weight: entry.weightVal,
         }));
 
@@ -76,17 +112,19 @@ const WeightTracking = () => {
 
       if (response.ok) {
         const newEntry = await response.json();
+        console.log(newEntry.weightTimestamp);
         setDailyEntries((prev) => [
           ...prev,
           {
             id: newEntry.weightId,
-            date: new Date(newEntry.weightTimestamp).toISOString().split("T")[0],
+            date: newEntry.weightTimestamp,
             weight: newEntry.weightVal,
           },
         ]);
         setFormData({
           weight: "",
         });
+        await fetchWeightData();
       } else {
         alert("Failed to add entry.");
       }
@@ -131,24 +169,29 @@ const WeightTracking = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(editFormData),
+          body: JSON.stringify({ weightVal: parseFloat(editFormData.weight) }),
         }
       );
   
       if (response.ok) {
         const updatedEntry = await response.json();
-        setDailyEntries((prev) =>
-          prev.map((entry) =>
+        setDailyEntries((prevEntries) =>
+          prevEntries.map((entry) =>
             entry.id === updatedEntry.weightId
               ? {
-                  ...updatedEntry,
-                  date: new Date(updatedEntry.weightTimestamp).toISOString().split("T")[0],
+                  ...entry,
                   weight: updatedEntry.weightVal,
+                  date: updatedEntry.weightTimestamp, // Ensure updated timestamp is reflected
                 }
               : entry
           )
         );
+  
+        
+       
         setEditingEntry(null);
+        setEditFormData({ weight: "" });
+        await fetchWeightData();
       } else {
         console.error("Failed to update entry");
       }
@@ -170,6 +213,7 @@ const WeightTracking = () => {
 
       if (response.ok) {
         setDailyEntries((prev) => prev.filter((entry) => entry.id !== id));
+        await fetchWeightData();
       } else {
         console.error("Failed to delete entry.");
       }
@@ -203,7 +247,8 @@ const WeightTracking = () => {
               type="number"
               step="0.1"
               id="weight"
-              value={weight}
+              name="weight"
+              value={formData.weight}
               onChange={handleChange}
               className="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter weight"
@@ -221,57 +266,33 @@ const WeightTracking = () => {
 
       {/* Chart Section */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Weight Trend</h2>
-          <div className="relative">
-            <select
-              value={timeframe}
-              onChange={(e) => setTimeframe(e.target.value)}
-              className="appearance-none bg-gray-50 border border-gray-300 rounded-md py-2 pl-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="1W">1 Week</option>
-              <option value="1M">1 Month</option>
-              <option value="3M">3 Months</option>
-              <option value="6M">6 Months</option>
-              <option value="1Y">1 Year</option>
-              <option value="ALL">All Time</option>
-            </select>
-            <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-          </div>
-        </div>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Weight Trend</h2>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={weightData}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="date"
-                tickFormatter={(date) => {
-                  return new Date(date).toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "numeric",
-                  });
-                }}
-                tick={{ fontSize: 14 }}
-                dy={5}
-              />
-              <YAxis
-                domain={["dataMin - 1", "dataMax + 1"]}
-                tick={{ fontSize: 14 }}
-                dy={-2}
-              />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="weight"
-                stroke="#3B82F6"
-                strokeWidth={2}
-                dot={{ fill: "#3B82F6", strokeWidth: 2 }}
-              />
-            </LineChart>
+            {loadingWeight ? (
+              <div className="text-center text-gray-500">Loading...</div>
+            ) : weightData.length > 0 ? (
+              <LineChart
+                data={weightData}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="date"
+                />
+                <YAxis /> {/* Ensures Y-axis starts at 0 */}
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="weight"
+                  stroke="#3B82F6"
+                  strokeWidth={2}
+                  dot={{ fill: "#3B82F6", strokeWidth: 2 }}
+                />
+              </LineChart>
+            ) : (
+              <div className="text-center text-gray-500">No data available</div>
+            )}
           </ResponsiveContainer>
         </div>
       </div>

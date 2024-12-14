@@ -9,6 +9,7 @@ import {
   Dumbbell,
 } from "lucide-react";
 
+
 const WorkoutTracking = () => {
   const [formData, setFormData] = useState({
     type: "weights", // 'weights' or 'cardio'
@@ -66,13 +67,14 @@ const WorkoutTracking = () => {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         const formattedData = data.map((entry) => ({
-          id: entry.id,
-          date: entry.date,
-          time: entry.time,
-          type: entry.type,
-          name: entry.name,
-          sets: entry.sets,
+          id: entry.workoutId,
+          date: entry.workoutTimestamp.split("T")[0],
+          time: entry.workoutTimestamp,
+          type: entry.workoutType,
+          name: entry.workoutName,
+          sets: entry.numSets,
           duration: entry.duration,
         }));
         setWorkoutHistory(formattedData);
@@ -107,7 +109,18 @@ const WorkoutTracking = () => {
 
       if (response.ok) {
         const newEntry = await response.json();
-        setWorkoutHistory((prev) => [...prev, newEntry]);
+        const formattedEntry = {
+          id: newEntry.workoutId, // Make sure this aligns with the actual field
+          date: newEntry.workoutTimestamp.split("T")[0],
+          time: newEntry.workoutTimestamp,
+          type: newEntry.workoutType,
+          name: newEntry.workoutName,
+          sets: newEntry.numSets,
+          duration: newEntry.duration,
+        };
+  
+        // Add the formatted entry to the workout history
+        setWorkoutHistory((prev) => [...prev, formattedEntry]);
         setFormData({
           type: "weights",
           name: "",
@@ -148,12 +161,24 @@ const WorkoutTracking = () => {
 
     if (response.ok) {
       const updatedEntry = await response.json();
+      const formattedEntry = {
+        id: updatedEntry.workoutId, // Ensure this aligns with the backend's field
+        date: updatedEntry.workoutTimestamp.split("T")[0],
+        time: updatedEntry.workoutTimestamp,
+        type: updatedEntry.workoutType,
+        name: updatedEntry.workoutName,
+        sets: updatedEntry.numSets,
+        duration: updatedEntry.duration,
+      };
+
+      // Update the state with the new entry
       setWorkoutHistory((prev) =>
-        prev.map((entry) =>
-          entry.id === updatedEntry.id ? updatedEntry : entry
-        )
+        prev.map((entry) => (entry.id === formattedEntry.id ? formattedEntry : entry))
       );
+
+      // Clear the editing state
       setEditingEntry(null);
+
     } else {
       console.error("Failed to update workout entry.");
     }
@@ -197,12 +222,6 @@ const WorkoutTracking = () => {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-800">Log Workout</h2>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">

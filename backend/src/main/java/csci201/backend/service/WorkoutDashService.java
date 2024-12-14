@@ -19,10 +19,7 @@ public class WorkoutDashService {
         LocalDateTime startOfWeek = now.with(java.time.DayOfWeek.MONDAY).withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime endOfWeek = now.with(java.time.DayOfWeek.SUNDAY).withHour(23).withMinute(59).withSecond(59).withNano(0);
 
-        Timestamp startTimestamp = Timestamp.valueOf(startOfWeek);
-        Timestamp endTimestamp = Timestamp.valueOf(endOfWeek);
+        return workoutRepository.countByUserIdAndWorkoutTimestampBetween(userId, startOfWeek, endOfWeek);
 
-        // Query the repository for workouts in this time range
-        return workoutRepository.countByUserUserIdAndWorkoutTimestampBetween(userId, startTimestamp, endTimestamp);
     }
 }

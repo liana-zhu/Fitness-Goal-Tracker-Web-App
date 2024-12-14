@@ -89,7 +89,7 @@ public class Workout {
 
     // Enum for workout type
     public enum WorkoutType {
-        Weights,
-        Cardio
+        weights,
+        cardio
     }
 }

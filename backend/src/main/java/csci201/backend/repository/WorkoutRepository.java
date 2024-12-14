@@ -9,18 +9,19 @@ import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
 
     // Count the number of workouts for a user within a specific time range
-    long countByUserUserIdAndWorkoutTimestampBetween(int userId, Timestamp start, Timestamp end);
+    long countByUserIdAndWorkoutTimestampBetween(int userId, LocalDateTime start, LocalDateTime end);
 
-    List<Workout> findTop3ByUserUserIdOrderByWorkoutTimestampDesc(int userId);
+    List<Workout> findTop3ByUserIdOrderByWorkoutTimestampDesc(int userId);
 
-    List<Weight> findByUserId(int userId);
+    List<Workout> findByUserId(int userId);
 
-    @Query("SELECT w FROM Weight w WHERE w.userId = :userId AND DATE(w.weightTimestamp) = :date")
-    List<Weight> findByUserIdAndDate(@Param("userId") int userId, @Param("date") LocalDate date);
+    @Query("SELECT w FROM Workout w WHERE w.userId = :userId AND DATE(w.workoutTimestamp) = :date")
+    List<Workout> findByUserIdAndDate(@Param("userId") int userId, @Param("date") LocalDate date);
 }

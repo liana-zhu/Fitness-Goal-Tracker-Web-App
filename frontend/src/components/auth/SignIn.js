@@ -123,16 +123,7 @@ const SignIn = () => {
           </div>
 
           {/* Additional Options */}
-          <div className="flex items-center justify-between">
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
-                Forgot password?
-              </a>
-            </div>
-          </div>
+          
 
           {/* Submit Button */}
           <button

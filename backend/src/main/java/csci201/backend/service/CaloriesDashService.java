@@ -19,20 +19,20 @@ public class CaloriesDashService {
 
     public Map<LocalDate, Integer> getDailyCaloriesForPastWeek(int userId) {
         // Get the start and end timestamps for the past week
-        LocalDateTime endOfToday = LocalDate.now().atStartOfDay().plusDays(1);
-        LocalDateTime startOfWeek = endOfToday.minusDays(7);
+       LocalDateTime endOfToday = LocalDate.now().atStartOfDay().plusDays(1);
+    LocalDateTime startOfWeek = endOfToday.minusDays(7);
 
-        Timestamp startTimestamp = Timestamp.valueOf(startOfWeek);
-        Timestamp endTimestamp = Timestamp.valueOf(endOfToday);
+    Timestamp startTimestamp = Timestamp.valueOf(startOfWeek);
+    Timestamp endTimestamp = Timestamp.valueOf(endOfToday);
 
-        // Fetch all calorie entries for the user in the past week
-        List<Object[]> results = caloriesRepository.findCaloriesSumByUserIdAndDateRange(userId, startTimestamp, endTimestamp);
+    // Fetch all calorie entries for the user in the past week
+    List<Object[]> results = caloriesRepository.findCaloriesSumByUserIdAndDateRange(userId, startTimestamp, endTimestamp);
 
-        // Map results to a Map<LocalDate, Integer>
-        return results.stream()
-                .collect(Collectors.toMap(
-                        result -> ((Timestamp) result[0]).toLocalDateTime().toLocalDate(), // Convert Timestamp to LocalDate
-                        result -> ((Number) result[1]).intValue() // Sum of calories
-                ));
+    // Map results to a Map<LocalDate, Integer>
+    return results.stream()
+            .collect(Collectors.toMap(
+                result -> ((java.sql.Date) result[0]).toLocalDate(), // Convert SQL Date to LocalDate
+                result -> ((Number) result[1]).intValue() // Sum of calories
+            ));
     }
 }
