@@ -23,7 +23,7 @@ CREATE TABLE workout(
     workout_name VARCHAR(100) NOT NULL,
     num_sets INT DEFAULT NULL,
     duration INT NOT NULL, -- mins
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE weight(
