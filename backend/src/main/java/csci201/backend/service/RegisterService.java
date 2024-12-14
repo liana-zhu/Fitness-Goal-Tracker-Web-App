@@ -11,7 +11,12 @@ public class RegisterService {
     @Autowired
     private UserRepository userRepository;
 
-    public String registerUser(String username, String email, String password) {
+    public String registerUser(String username, String email, String password, String confirmPassword) {
+        // Check if passwords match
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Passwords do not match.");
+        }
+
         // Check if the username is already taken
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username is already taken.");

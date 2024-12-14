@@ -16,10 +16,11 @@ public class RegisterController {
     public ResponseEntity<Object> register(
             @RequestParam String username,
             @RequestParam String email,
-            @RequestParam String password) {
+            @RequestParam String password,
+            @RequestParam String confirmPassword) {
         try {
             // Call the service to register the user
-            String message = registerService.registerUser(username, email, password);
+            String message = registerService.registerUser(username, email, password, confirmPassword);
             return ResponseEntity.ok(message); // Return success message
         } catch (IllegalArgumentException e) {
             // Return error message for validation failures
